@@ -1,12 +1,18 @@
 <?php
   session_start();
   include("session.php");
+
+  // Si l'utilisateur est connecté
+  if (isset($_SESSION["IsConnecting"]) && $_SESSION["IsConnecting"] == true)
+  {
+	header("Location: accueil.php");
+  }
 ?>
 
 <!doctype html>
 <html lang="fr">
   	<head>
-		<title>Accueil</title>
+		<title>Connexion</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 

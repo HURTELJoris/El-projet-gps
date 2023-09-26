@@ -4,7 +4,6 @@
     class User // Utilisateur(s) du site
     {
         // Attribut(s)
-        public $Tabtest=[];
         private $nameUser; // (Pas encore utilisé  mais pour l'affichage du pseudo cela peut être utile)
         private $emailUser;
         private $creationSucceeded;
@@ -119,7 +118,6 @@
                             }
                             else if ($password != $user['passwd']) // Si le mot de passe est  différent
                             {
-                                $this->test($password, $user['passwd']);
                                 return 3;
                             }
                         }
@@ -166,15 +164,5 @@
             return $this->creationSucceeded; 
         }
 
-        public function test($test1, $test2)
-        {
-            $this->Tabtest[0] = $test1;
-            $this->Tabtest[1] = $test2;
-        }
-
-        public function returnTest()
-        {
-            return $this->Tabtest;
-        }
     }
 ?>

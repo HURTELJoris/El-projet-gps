@@ -12,7 +12,7 @@
       {
         if (!(isset($_SESSION["IsConnecting"]))) // Si il est pas connecter
         {
-          $theUser = new User($_POST["inputNom"], $_POST["inputEmail"], hash('sha256', $_POST["inputPassword"]));
+          $theUser = new User($_POST["inputNom"], $_POST["inputEmail"], $_POST["inputPassword"]);
         }
       }
       
@@ -41,7 +41,7 @@
       {
         if (!(isset($_SESSION["IsConnecting"]))) // Si il est pas connecter
         {
-          $statusConnect = $theUser->Connexion($_POST["inputEmail"], hash('sha256', $_POST["inputPassword"]));
+          $statusConnect = $theUser->Connexion($_POST["inputEmail"], $_POST["inputPassword"]);
   
           if ($statusConnect == 1) // Connexion et dans les cas contraire on envoie un message d'erreur
           {
@@ -51,9 +51,8 @@
         }
       }
   }
-  /*
   else if (strpos($current_url, '/accueil.php') !== false) // Si page d'accueil
   {
+
   }
-  */
 ?>
