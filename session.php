@@ -51,8 +51,24 @@
         }
       }
   }
-  else if (strpos($current_url, '/accueil.php') !== false) // Si page d'accueil
+  else if (strpos($current_url, '/compte.php') !== false) // Si page d'accueil
   {
+    if ((isset($_SESSION["IsConnecting"]))) // Si il est pas connecter
+    {
+      if (isset($_POST["btnSubmitUsername"])) // Si il appuis le bouton connexion
+      {
+      }
+      else if (isset($_POST["btnSubmitEmail"])) // Si il appuis le bouton connexion
+      {
+      }
+      else if (isset($_POST["btnSubmitPaswword"])) // Si il appuis le bouton connexion
+      {
+      }
+      else if (isset($_POST["btnSubmitDeleteAll"])) // Si il appuis le bouton connexion
+      {
+      }
+    }
 
+    // $_POST["inputUsername"] / $_POST["inputEmail"] / $_POST["inputPassword"]
   }
 ?>

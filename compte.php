@@ -20,7 +20,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>GPS - Accueil</title>
+        <title>GPS - Compte</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/website.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="accueil.php">GPS</a>
+            <a class="navbar-brand ps-3" href="index.html">GPS</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -44,7 +44,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="compte.php">Mon compte</a></li>
+                        <li><a class="dropdown-item" href="#!">Mon compte</a></li>
                         <?php
                             // Si l'utilisateur est connecté
                             if (isset($_SESSION["IsConnecting"]) && $_SESSION["IsConnecting"] == true)
@@ -107,49 +107,51 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Utilisateur(s) présent :
+                                Paramètre(s) de votre compte :
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
+                                <table>
                                     <tbody>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
+                                            <form action="" method="POST">
+                                                <td style="width: 200px;">Nom d'utilisateur :</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="inputUsername" id="username" placeholder="Nouveau nom d'utilisateur" style="width: 300px;">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" id="changeUsername">Modifier</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </form>
                                         </tr>
                                         <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
+                                            <form action="" method="POST">
+                                                <td style="width: 200px;">E-mail :</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="email" class="form-control" name="inputEmail" id="email" placeholder="email@exemple.com" style="width: 300px;">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" id="changeEmail">Modifier</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </form>
+                                        </tr>
+                                        <tr>
+                                            <form action="" method="POST">
+                                                <td style="width: 200px;">Mot de passe :</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" name="inputPassword" id="password" placeholder="Nouveau mot de passe" style="width: 300px;">
+                                                        <button class="btn btn-primary" id="changePassword">Modifier</button>
+                                                    </div>
+                                                </td>
+                                            </form>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <button class="btn btn-danger">Supprimer définitivement votre compte</button>
                             </div>
                         </div>
                     </div>
