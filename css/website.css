@@ -11241,3 +11241,53 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+/*  MESSAGE D'ALERTE */
+.demo-preview 
+{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    width: 70%;
+    margin: auto;
+    text-align: center;
+}
+  
+.alert 
+{
+    padding: .7143rem 1.071rem;
+    margin-bottom: 1.429rem;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    color: #FFF
+}
+  
+.alert.alert-success 
+{
+    background-color: #64DD17;
+    border-color: #64DD17
+}
+  
+.alert.alert-danger 
+{
+    background-color: #ef1c1c;
+    border-color: #EF5350
+}
+
+/* Ajout de styles pour le bouton de fermeture */
+.close-button {
+    position: absolute;
+    top: 10px; /* Ajustez la valeur pour régler la position verticale */
+    right: 10px; /* Ajustez la valeur pour régler la position horizontale */
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.5; /* Optionnel : ajustez la transparence au besoin */
+}
+
+.close-button:hover {
+    opacity: 3; /* Optionnel : ajustez la transparence au besoin */
+}

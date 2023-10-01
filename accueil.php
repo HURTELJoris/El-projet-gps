@@ -1,15 +1,6 @@
 <?php
   session_start();
   include("session.php");
-
-  
-      // Si il appuis sur le bouton de déconnexion
-      if (isset($_POST["Deconnexion"]))
-      {
-          session_unset(); // On supprime tout les tableaux de la session
-          session_destroy(); // On détruit la session
-          header("Location: index.php");
-      }
 ?>
 
 <!DOCTYPE html>

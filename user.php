@@ -65,12 +65,10 @@
                             $this->emailUser = $email;
                             $this->creationSucceeded = 1;
 
-                            // On va ainsi prendre le pseudo pour la session
-                            $_SESSION["Login"] = $this->nameUser; // Tableau de session Login = login de l'utilsateur
-
-                            // On va créer un idUser par à son email et on va le stocker dans la session
-                            $UserId = $this->getIdUser($this->emailUser);
-                            $_SESSION["idUser"] = $UserId;
+                            // On va ainsi modifier les informations pour la session
+                            $_SESSION["Login"] = $name; // Tableau de session Login = login de l'utilsateur
+                            $_SESSION["EmailUsername"] = $email;
+                            $_SESSION["IsConnecting"] = true;
                         }
                         else
                         {
@@ -109,11 +107,9 @@
                             {
                                 // On va ainsi prendre le pseudo pour la session
                                 $_SESSION["Login"] = $user['nom']; // Tableau de session Login = login de l'utilsateur
+                                $_SESSION["EmailUsername"] = $login;
+                                $_SESSION["IsConnecting"] = true;
 
-                                // On va créer un idUser par à son email et on va le stocker dans la session
-                                $UserId = $this->getIdUser($login);
-                                $_SESSION["idUser"] = $UserId;
-                                
                                 return 1;
                             }
                             else if ($password != $user['passwd']) // Si le mot de passe est  différent
@@ -138,7 +134,7 @@
             }
         }
 
-        // Méthode pour récupérer l'id d'un
+        // Méthode pour récupérer l'id d'un user
         public function getIdUser($login)
         {
             $idUser = null; // On définit l'id à null
@@ -151,11 +147,111 @@
                 $row_countId = $selectIdResult->rowCount();
                 if($row_countId > 0) // Si le nombre de résultat est supérieur à 0
                 {
-                    $idUser = $selectIdResult->fetch(); // On va récup l'id user
+                    $row = $selectIdResult->fetch(); // On va récup l'id user
+                    $idUser = $row["idUser"]; // Extraire l'ID de l'utilisateur de la ligne
+                    return $idUser; // Et on va le retourner
                 }
+                else 
+                {
+                    return 0;
+                }    
+            }
+            else 
+            {
+                return 0;
+            }
+        }
+
+        // Méthode pour changer l'username
+        public function setUsername($login, $newUsername)
+        {
+            $userId = $this->getIdUser($login);
+
+            if ($userId == 0)
+            {
+                return 0;
             }
 
-            return $idUser; // Et on va le retourner
+            $selectUser = "UPDATE user SET nom = '$newUsername' where idUser = '$userId' and email = '$login'";
+            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+
+            if ($selectUserResult != false) // Si la requête est réussie
+            {
+                return 1;
+            }
+            else 
+            {
+                return 0;
+            }
+        }
+
+        // Méthode pour changer l'email
+        public function setEmail($login, $newEmail)
+        {
+            $userId = $this->getIdUser($login);
+
+            if ($userId == 0)
+            {
+                return 0;
+            }
+
+            $selectUser = "UPDATE user SET email = '$newEmail' where idUser = '$userId' and email = '$login'";
+            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+
+            if ($selectUserResult != false) // Si la requête est réussie
+            {
+                return 1;
+            }
+            else 
+            {
+                return 0;
+            }
+        }
+
+        // Méthode pour changer le password
+        public function setPassword($login, $newPassword)
+        {
+            $userId = $this->getIdUser($login);
+
+            if ($userId == 0)
+            {
+                return 0;
+            }
+
+            $selectUser = "UPDATE user SET passwd = '$newPassword' where idUser = '$userId' and email = '$login'";
+            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+
+            if ($selectUserResult != false) // Si la requête est réussie
+            {
+                return 1;
+            }
+            else 
+            {
+                return 0;
+            }
+        }
+
+        // Méthode pour supprimer le compte
+        public function deleteAccount($login)
+        {
+            $userId = $this->getIdUser($login);
+
+            if ($userId == 0)
+            {
+                return 0;
+            }
+
+            $selectUser = "DELETE FROM user where idUser = '$userId' and email = '$login'";
+            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+
+            if ($selectUserResult != false) // Si la requête est réussie
+            {
+                return 1;
+            }
+            else 
+            {
+                return 0;
+            }
         }
 
         // Méthode pour la création de compte

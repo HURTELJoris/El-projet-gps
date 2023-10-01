@@ -1,15 +1,6 @@
 <?php
   session_start();
   include("session.php");
-
-  
-      // Si il appuis sur le bouton de déconnexion
-      if (isset($_POST["Deconnexion"]))
-      {
-          session_unset(); // On supprime tout les tableaux de la session
-          session_destroy(); // On détruit la session
-          header("Location: index.php");
-      }
 ?>
 
 <!DOCTYPE html>
@@ -22,23 +13,26 @@
         <meta name="author" content="" />
         <title>GPS - Compte</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link href="css/website.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
+
+    <style>
+        .custom-input {
+            max-width: 500px; /* longeur des champs input dans les différents fomurlaires */
+        }
+    </style>
+
     <body class="sb-nav-fixed">
+
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">GPS</a>
+
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <!--
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <<input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>-->
+
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
@@ -71,7 +65,9 @@
                 </li>
             </ul>
         </nav>
+
         <div id="layoutSidenav">
+            
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
@@ -101,61 +97,99 @@
                     </div>
                 </nav>
             </div>
+
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <div class="card mb-4">
+                    <div class="container-fluid">
+                        <div class="card">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 Paramètre(s) de votre compte :
                             </div>
+
                             <div class="card-body">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <form action="" method="POST">
-                                                <td style="width: 200px;">Nom d'utilisateur :</td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" name="inputUsername" id="username" placeholder="Nouveau nom d'utilisateur" style="width: 300px;">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-primary" id="changeUsername">Modifier</button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </form>
-                                        </tr>
-                                        <tr>
-                                            <form action="" method="POST">
-                                                <td style="width: 200px;">E-mail :</td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="email" class="form-control" name="inputEmail" id="email" placeholder="email@exemple.com" style="width: 300px;">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-primary" id="changeEmail">Modifier</button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </form>
-                                        </tr>
-                                        <tr>
-                                            <form action="" method="POST">
-                                                <td style="width: 200px;">Mot de passe :</td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control" name="inputPassword" id="password" placeholder="Nouveau mot de passe" style="width: 300px;">
-                                                        <button class="btn btn-primary" id="changePassword">Modifier</button>
-                                                    </div>
-                                                </td>
-                                            </form>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button class="btn btn-danger">Supprimer définitivement votre compte</button>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                            <p><strong>Nom d'utilisateur : <?=$_SESSION["Login"]?></strong></p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                            <p><strong>E-mail : <?=$_SESSION["EmailUsername"]?></strong></p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                            <p><strong>Compte : Actif</strong></p>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <form action="" method="POST">
+                                            <p>Nom d'utilisateur :</p>
+
+                                            <div class="input-group">
+                                                <input type="text" class="form-control custom-input" name="inputUsername" id="username" placeholder="Nouveau nom d'utilisateur" required>
+                                                <button style="margin-left: 10px;" class="btn btn-primary" id="changeUsername" name="btnSubmitUsername">Modifier</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-md-6 mb-2">
+                                        <form action="" method="POST">
+                                            <p>E-mail :</p>
+
+                                            <div class="input-group">
+                                                <input type="email" class="form-control custom-input" name="inputEmail" id="email" placeholder="Nouvelle adresse-mail" required>
+                                                <button style="margin-left: 10px;" class="btn btn-primary" id="changeEmail" name="btnSubmitEmail">Modifier</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <form action="" method="POST">
+                                            <p>Mot de passe :</p>
+
+                                            <div class="input-group">
+                                                <input type="password" class="form-control custom-input" name="inputPassword" id="password" placeholder="Nouveau mot de passe" required>
+                                                <button style="margin-left: 10px;" class="btn btn-primary" id="changePassword" name="btnSubmitPaswword">Modifier</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div style="margin-top: 40px;" class="col-md-6">
+                                        <form action="" method="POST">
+                                            <div class="input-group">
+                                                <button class="btn btn-danger" id="deleteAccount" name="btnSubmitDeleteAccount">Supprimer définitivement votre compte</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="demo-preview">
+                    <?php
+                        if ($resultForm == 1) // Si un des formulaires est valider
+                        {
+                            ?>
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close-button"><span aria-hidden="true">×</span></button>
+                                    <strong>Changement effectuer avec succés !</strong> (regarder votre pseudo en bas à droite)
+                                </div>
+                            <?php
+                        }
+                        else if ($resultForm == 0)// Sinon message d'erreur
+                        {
+                            ?>
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close-button"><span aria-hidden="true">×</span></button>
+                                    <strong>ERREUR !</strong> Un problème est servenu lors du changement
+                                </div>
+                            <?php
+                        }
+                    ?>
+                    </div>
                 </main>
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -163,8 +197,10 @@
                         </div>
                     </div>
                 </footer>
+
             </div>
         </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/website.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

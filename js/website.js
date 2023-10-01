@@ -24,3 +24,11 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+$(document).ready(function() {
+    // Sélectionnez le bouton de fermeture (la croix) par sa classe et attachez un gestionnaire de clic
+    $(".close-button").click(function() {
+        // Sélectionnez l'élément parent de l'alerte (la div de l'alerte) et masquez-le
+        $(this).parent(".alert").hide();
+    });
+});
