@@ -15,26 +15,12 @@ Voici la composition de la base de données :
 
 Lawrence     	
       
-      └── gps  
-        ├── bateauID : int (clé primaire)  
-        ├── Date : date 
-        └── Heure : time
-        └── Latitude : varchar (100)
-        └── Longitude : varchar (100)
-
       └── user  
         ├── idUser : int (clé primaire)  
         ├── nom : varchar(30)  
         ├── email : varchar(300)  
         └── passwd : varchar (300)  
         └── isAdmin : tinyint (200) 
-
-      └── vitesse  
-        ├── bateauID : int (clé étrangère)  
-        ├── Date : date 
-        └── Heure : time
-        └── Vitesse : int (11)
-        └── VitesseMoyenne : float
 
 
 -----------------
