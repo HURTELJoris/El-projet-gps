@@ -105,10 +105,14 @@
                         {
                             if($login == $user['email'] &&  $password == $user['passwd']) // Si un user avec le même mdp à était trouvé alors on le connecte
                             {
-                                // On va ainsi prendre le pseudo pour la session
+                                // On va ainsi prendre les infos pour la session
                                 $_SESSION["Login"] = $user['nom']; // Tableau de session Login = login de l'utilsateur
                                 $_SESSION["EmailUsername"] = $login;
                                 $_SESSION["IsConnecting"] = true;
+
+                                // On va mettre si il est admin dans la session
+                                $isAdmin = $this->getIsAdmin($login);
+                                $_SESSION["isAdmin"] = $isAdmin;
 
                                 return 1;
                             }
@@ -139,26 +143,29 @@
         {
             $idUser = null; // On définit l'id à null
 
-            $selectID = "SELECT idUser FROM user where email='$login'";
-            $selectIdResult = $GLOBALS["pdo"] -> query($selectID);
-
-            if ($selectIdResult != false) // Si la requête est réussie
+            if($GLOBALS["pdo"])
             {
-                $row_countId = $selectIdResult->rowCount();
-                if($row_countId > 0) // Si le nombre de résultat est supérieur à 0
+                $selectID = "SELECT idUser FROM user where email='$login'";
+                $selectIdResult = $GLOBALS["pdo"] -> query($selectID);
+
+                if ($selectIdResult != false) // Si la requête est réussie
                 {
-                    $row = $selectIdResult->fetch(); // On va récup l'id user
-                    $idUser = $row["idUser"]; // Extraire l'ID de l'utilisateur de la ligne
-                    return $idUser; // Et on va le retourner
+                    $row_countId = $selectIdResult->rowCount();
+                    if($row_countId > 0) // Si le nombre de résultat est supérieur à 0
+                    {
+                        $row = $selectIdResult->fetch(); // On va récup l'id user
+                        $idUser = $row["idUser"]; // Extraire l'ID de l'utilisateur de la ligne
+                        return $idUser; // Et on va le retourner
+                    }
+                    else 
+                    {
+                        return 0;
+                    }    
                 }
                 else 
                 {
                     return 0;
-                }    
-            }
-            else 
-            {
-                return 0;
+                }
             }
         }
 
@@ -172,16 +179,19 @@
                 return 0;
             }
 
-            $selectUser = "UPDATE user SET nom = '$newUsername' where idUser = '$userId' and email = '$login'";
-            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+            if($GLOBALS["pdo"])
+            {
+                $updateUser = "UPDATE user SET nom = '$newUsername' where idUser = '$userId' and email = '$login'";
+                $updateUserResult = $GLOBALS["pdo"] -> query($updateUser);
 
-            if ($selectUserResult != false) // Si la requête est réussie
-            {
-                return 1;
-            }
-            else 
-            {
-                return 0;
+                if ($updateUserResult != false) // Si la requête est réussie
+                {
+                    return 1;
+                }
+                else 
+                {
+                    return 0;
+                }
             }
         }
 
@@ -195,16 +205,19 @@
                 return 0;
             }
 
-            $selectUser = "UPDATE user SET email = '$newEmail' where idUser = '$userId' and email = '$login'";
-            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+            if($GLOBALS["pdo"])
+            {
+                $updateUser = "UPDATE user SET email = '$newEmail' where idUser = '$userId' and email = '$login'";
+                $updateUserResult = $GLOBALS["pdo"] -> query($updateUser);
 
-            if ($selectUserResult != false) // Si la requête est réussie
-            {
-                return 1;
-            }
-            else 
-            {
-                return 0;
+                if ($updateUserResult != false) // Si la requête est réussie
+                {
+                    return 1;
+                }
+                else 
+                {
+                    return 0;
+                }
             }
         }
 
@@ -218,16 +231,19 @@
                 return 0;
             }
 
-            $selectUser = "UPDATE user SET passwd = '$newPassword' where idUser = '$userId' and email = '$login'";
-            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+            if($GLOBALS["pdo"])
+            {
+                $updateUser = "UPDATE user SET passwd = '$newPassword' where idUser = '$userId' and email = '$login'";
+                $updateUserResult = $GLOBALS["pdo"] -> query($updateUser);
 
-            if ($selectUserResult != false) // Si la requête est réussie
-            {
-                return 1;
-            }
-            else 
-            {
-                return 0;
+                if ($updateUserResult != false) // Si la requête est réussie
+                {
+                    return 1;
+                }
+                else 
+                {
+                    return 0;
+                }
             }
         }
 
@@ -240,13 +256,77 @@
             {
                 return 0;
             }
-
-            $selectUser = "DELETE FROM user where idUser = '$userId' and email = '$login'";
-            $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
-
-            if ($selectUserResult != false) // Si la requête est réussie
+            
+            if($GLOBALS["pdo"])
             {
-                return 1;
+                $deleteUser = "DELETE FROM user where idUser = '$userId' and email = '$login'";
+                $deleteUserResult = $GLOBALS["pdo"] -> query($deleteUser);
+
+                if ($deleteUserResult != false) // Si la requête est réussie
+                {
+                    return 1;
+                }
+                else 
+                {
+                    return 0;
+                }
+            }
+        }
+
+        // Méthode pour savoir si il est admin
+        public function getIsAdmin($login)
+        {
+            $userId = $this->getIdUser($login);
+
+            if ($userId == 0)
+            {
+                return 0;
+            }
+
+            if($GLOBALS["pdo"])
+            {
+                $selectUser = "SELECT isAdmin FROM user where idUser = '$userId' and email = '$login'";
+                $selectUserResult = $GLOBALS["pdo"] -> query($selectUser);
+
+                if ($selectUserResult != false) // Si la requête est réussie
+                {
+                    $row_countId = $selectUserResult->rowCount();
+                    if($row_countId > 0) // Si le nombre de résultat est supérieur à 0
+                    {
+                        $row = $selectUserResult->fetch(); // On va récup l'id user
+
+                        $isAdmin = $row["isAdmin"]; // Extraire isAdmin
+                        return $isAdmin; // Et on va le retourner
+                    }
+                    else 
+                    {
+                        return 0;
+                    }   
+                }
+                else 
+                {
+                    return 0;
+                } 
+            }
+
+        }
+
+        public function getAllUser()
+        {
+            if($GLOBALS["pdo"])
+            {
+                $selectAllUser = "SELECT nom, email FROM user";
+                $selectAllUserResult = $GLOBALS["pdo"]->query($selectAllUser);
+
+                if($selectAllUserResult != false)
+                {
+                    $tabUsers = $selectAllUserResult->fetchALL();
+                    return $tabUsers;
+                }
+                else 
+                {
+                    return 0;
+                }
             }
             else 
             {
@@ -259,6 +339,5 @@
         {
             return $this->creationSucceeded; 
         }
-
     }
 ?>

@@ -1,6 +1,11 @@
 <?php
   session_start();
   include("session.php");
+
+  if (!isset($_SESSION["IsConnecting"]) && $_SESSION["isAdmin"] != 1) // Si il est admin
+  {
+    header("Location: accueil.php");
+  }
 ?>
 
 <!DOCTYPE html>
@@ -13,9 +18,12 @@
         <meta name="author" content="" />
         <title>GPS - Compte</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link href="css/website.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
 
     <style>
@@ -32,13 +40,13 @@
 
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-
+            
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Mon compte</a></li>
+                        <li><a class="dropdown-item" href="compte.php">Mon compte</a></li>
                         <?php
                             // Si l'utilisateur est connecté
                             if (isset($_SESSION["IsConnecting"]) && $_SESSION["IsConnecting"] == true)
@@ -85,93 +93,90 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Position des bateaux
                             </a>
-                            <?php
-                                if (isset($_SESSION["IsConnecting"]) && $_SESSION["isAdmin"] == 1) // Si il est admin
-                                {
-                                    ?>
-                                        <a class="nav-link" href="admin.php">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Accès administrateur
-                                        </a>
-                                    <?php
-                                }
-                            ?>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Accès administrateur
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Connecté en tant que :</div>
-                        <?=$_SESSION["Login"]?>
+                        <?=$_SESSION["Login"]?> (Admin)
                     </div>
                 </nav>
             </div>
 
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                Paramètre(s) de votre compte :
-                            </div>
+                <div class="container">
+        <h2>Liste des comptes</h2>
+        <input type="text" id="search" class="form-control mb-2" placeholder="Rechercher par nom ou e-mail">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>E-mail</th>
+                    <th>Modifier</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John Doe</td>
+                    <td>johndoe@example.com</td>
+                    <td>
+                        <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal">Modifier</button>
+                    </td>
+                </tr>
+                <!-- Ajoutez d'autres lignes de données ici -->
+            </tbody>
+        </table>
+    </div>
 
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                            <p><strong>Nom d'utilisateur : <?=$_SESSION["Login"]?></strong></p>
-                                    </div>
+    <script>
+        $(document).ready(function(){
+            // Fonction pour la recherche
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
 
-                                    <div class="col-md-4">
-                                            <p><strong>E-mail : <?=$_SESSION["EmailUsername"]?></strong></p>
-                                    </div>
+            // Fonction pour la modification
+            $("#saveChanges").click(function() {
+                var newName = $("#newName").val();
+                var newEmail = $("#newEmail").val();
+                // Mettez à jour les valeurs du tableau ici
+                alert("Nouveau Nom: " + newName + ", Nouveau E-mail: " + newEmail);
+            });
+        });
+        </script>
 
-                                    <div class="col-md-4">
-                                            <p><strong>Compte : Actif</strong></p>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <form action="" method="POST">
-                                            <p>Nom d'utilisateur :</p>
-
-                                            <div class="input-group">
-                                                <input type="text" class="form-control custom-input" name="inputUsername" id="username" placeholder="Nouveau nom d'utilisateur" required>
-                                                <button style="margin-left: 10px;" class="btn btn-primary" id="changeUsername" name="btnSubmitUsername">Modifier</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="col-md-6 mb-2">
-                                        <form action="" method="POST">
-                                            <p>E-mail :</p>
-
-                                            <div class="input-group">
-                                                <input type="email" class="form-control custom-input" name="inputEmail" id="email" placeholder="Nouvelle adresse-mail" required>
-                                                <button style="margin-left: 10px;" class="btn btn-primary" id="changeEmail" name="btnSubmitEmail">Modifier</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <form action="" method="POST">
-                                            <p>Mot de passe :</p>
-
-                                            <div class="input-group">
-                                                <input type="password" class="form-control custom-input" name="inputPassword" id="password" placeholder="Nouveau mot de passe" required>
-                                                <button style="margin-left: 10px;" class="btn btn-primary" id="changePassword" name="btnSubmitPaswword">Modifier</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div style="margin-top: 40px;" class="col-md-6">
-                                        <form action="" method="POST">
-                                            <div class="input-group">
-                                                <button class="btn btn-danger" id="deleteAccount" name="btnSubmitDeleteAccount">Supprimer définitivement votre compte</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Modal pour la modification -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modifier le compte</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newName">Nouveau Nom:</label>
+                        <input type="text" class="form-control" id="newName">
                     </div>
+                    <div class="form-group">
+                        <label for="newEmail">Nouveau E-mail:</label>
+                        <input type="email" class="form-control" id="newEmail">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="saveChanges">Enregistrer</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
                     <div class="demo-preview">
                     <?php
@@ -211,6 +216,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/website.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    </body>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>    </body>
 </html>

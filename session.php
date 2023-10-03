@@ -88,4 +88,9 @@
       }
     }
   }
+  else if (strpos($current_url, '/admin.php') !== false) // Si page d'accueil
+  {
+    $resultForm = -1;
+    $tabMedecins = $theUser->getAllUser();
+  }
 ?>
