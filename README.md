@@ -22,7 +22,6 @@ Lawrence
         └── passwd : varchar (300)  
         └── isAdmin : tinyint (200) 
 
-
 -----------------
 
 
