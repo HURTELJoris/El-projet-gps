@@ -125,7 +125,20 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                            <p><strong>Compte : Actif</strong></p>
+                                        <?php
+                                            if (isset($_SESSION["IsConnecting"]) && $_SESSION["isAdmin"] == 1)
+                                            {
+                                                ?>
+                                                    <p><strong>Compte : Admin</strong></p>
+                                                <?php
+                                            }
+                                            else
+                                            {
+                                                ?>
+                                                    <p><strong>Compte : Utilisateur Lambda</strong></p>
+                                                <?php
+                                            }
+                                        ?>
                                     </div>
 
                                     <div class="col-md-6">
@@ -133,7 +146,7 @@
                                             <p>Nom d'utilisateur :</p>
 
                                             <div class="input-group">
-                                                <input type="text" class="form-control custom-input" name="inputUsername" id="username" placeholder="Nouveau nom d'utilisateur" required>
+                                                <input type="text" class="form-control custom-input" name="inputUsername" id="username" pattern="[A-Za-zÀ-ÖØ-öø-ÿ-]+" title="Entrez un nom valide (lettres, espaces et tirets uniquement)" placeholder="Nouveau nom d'utilisateur" required>
                                                 <button style="margin-left: 10px;" class="btn btn-primary" id="changeUsername" name="btnSubmitUsername">Modifier</button>
                                             </div>
                                         </form>
@@ -144,7 +157,7 @@
                                             <p>E-mail :</p>
 
                                             <div class="input-group">
-                                                <input type="email" class="form-control custom-input" name="inputEmail" id="email" placeholder="Nouvelle adresse-mail" required>
+                                                <input type="email" class="form-control custom-input" name="inputEmail" id="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Entrez une adresse e-mail valide" placeholder="Nouvelle adresse-mail" required>
                                                 <button style="margin-left: 10px;" class="btn btn-primary" id="changeEmail" name="btnSubmitEmail">Modifier</button>
                                             </div>
                                         </form>
@@ -155,7 +168,7 @@
                                             <p>Mot de passe :</p>
 
                                             <div class="input-group">
-                                                <input type="password" class="form-control custom-input" name="inputPassword" id="password" placeholder="Nouveau mot de passe" required>
+                                                <input type="password" class="form-control custom-input" name="inputPassword" id="password" pattern="[A-Za-zÀ-ÖØ-öø-ÿ-]+" placeholder="Nouveau mot de passe" required>
                                                 <button style="margin-left: 10px;" class="btn btn-primary" id="changePassword" name="btnSubmitPaswword">Modifier</button>
                                             </div>
                                         </form>

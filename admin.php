@@ -76,6 +76,7 @@
 
         <div id="layoutSidenav">
             
+            <!-- NAVBAR pour les pages -->
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
@@ -108,75 +109,62 @@
 
             <div id="layoutSidenav_content">
                 <main>
-                <div class="container">
-        <h2>Liste des comptes</h2>
-        <input type="text" id="search" class="form-control mb-2" placeholder="Rechercher par nom ou e-mail">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>E-mail</th>
-                    <th>Modifier</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>John Doe</td>
-                    <td>johndoe@example.com</td>
-                    <td>
-                        <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal">Modifier</button>
-                    </td>
-                </tr>
-                <!-- Ajoutez d'autres lignes de données ici -->
-            </tbody>
-        </table>
-    </div>
 
-    <script>
-        $(document).ready(function(){
-            // Fonction pour la recherche
-            $("#search").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("tbody tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
+                <!-- Modif pour les comptes -->
+                <div class="container mt-4">
 
-            // Fonction pour la modification
-            $("#saveChanges").click(function() {
-                var newName = $("#newName").val();
-                var newEmail = $("#newEmail").val();
-                // Mettez à jour les valeurs du tableau ici
-                alert("Nouveau Nom: " + newName + ", Nouveau E-mail: " + newEmail);
-            });
-        });
-        </script>
+                    <h2>Liste des comptes</h2>
+                    <input type="text" id="search" class="form-control mb-2" placeholder="Rechercher par nom ou e-mail">
 
-    <!-- Modal pour la modification -->
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Modifier le compte</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>E-mail</th>
+                                <th>Modification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>johndoe@example.com</td>
+                                <td style="text-align: center;">
+                                    <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal">Modifier le compte</button>
+                                </td>
+                            </tr>
+                            <!-- Ajoutez d'autres lignes de données ici -->
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="newName">Nouveau Nom:</label>
-                        <input type="text" class="form-control" id="newName">
-                    </div>
-                    <div class="form-group">
-                        <label for="newEmail">Nouveau E-mail:</label>
-                        <input type="email" class="form-control" id="newEmail">
+
+                <!-- Modal pour la modification -->
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="myForm" action="" method="POST">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Modification du Compte</h4>
+                                    <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="newName">Nouveau Nom:</label>
+                                    <input type="text" class="form-control" id="newName" name="newName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="newEmail">Nouvelle E-mail:</label>
+                                    <input type="email" class="form-control" id="newEmail" name="newEmail">
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success" id="saveChanges">Enregistrer</button>
+                                    <button class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" id="saveChanges">Enregistrer</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
                     <div class="demo-preview">
                     <?php
@@ -209,12 +197,23 @@
                         </div>
                     </div>
                 </footer>
-
             </div>
         </div>
+
+        <script>
+            // MODULE POUR modifier les infos d'un user en tant que admin
+            $("#search").on("keyup", function() 
+            {
+                var value = $(this).val().toLowerCase();
+                $("tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/website.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>    </body>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    </body>
 </html>
