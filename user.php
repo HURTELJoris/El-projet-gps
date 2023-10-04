@@ -311,11 +311,12 @@
 
         }
 
+        // Méthode pour récupérer tout les utilisateurs
         public function getAllUser()
         {
             if($GLOBALS["pdo"])
             {
-                $selectAllUser = "SELECT nom, email FROM user";
+                $selectAllUser = "SELECT  nom, email FROM user";
                 $selectAllUserResult = $GLOBALS["pdo"]->query($selectAllUser);
 
                 if($selectAllUserResult != false)

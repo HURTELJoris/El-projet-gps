@@ -125,14 +125,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>John Doe</td>
-                                <td>johndoe@example.com</td>
-                                <td style="text-align: center;">
-                                    <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal">Modifier le compte</button>
-                                </td>
-                            </tr>
-                            <!-- Ajoutez d'autres lignes de données ici -->
+                            <?php
+                                if ($tabUsers != 0)
+                                {
+                                    foreach($tabUsers as $user) // On va parcourir le tableau d'utilisateur
+                                    {
+                                        ?>
+                                            <tr>
+                                                <td><?=$user['nom']?></td>
+                                                <td><?=$user['email']?></td>
+                                                <td style="text-align: center;">
+                                                    <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal">Modifier le compte</button>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                    }
+                                }
+                                else
+                                {
+                                    echo  "ERREUR";
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -149,16 +162,16 @@
                                 
                                 <div class="form-group">
                                     <label for="newName">Nouveau Nom:</label>
-                                    <input type="text" class="form-control" id="newName" name="newName">
+                                    <input type="text" class="form-control" id="newName" name="newName" placeholder="(Au moins un champ doit être rempli)">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="newEmail">Nouvelle E-mail:</label>
-                                    <input type="email" class="form-control" id="newEmail" name="newEmail">
+                                    <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="(Au moins un champ doit être rempli)">
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success" id="saveChanges">Enregistrer</button>
+                                    <button type="submit" class="btn btn-success" name="changeInformation" id="saveChanges">Enregistrer</button>
                                     <button class="btn btn-danger" data-dismiss="modal">Annuler</button>
                                 </div>
                             </form>
