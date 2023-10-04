@@ -20,8 +20,8 @@ Lawrence
         ├── idUser : int (clé primaire)  
         ├── nom : varchar(30)  
         ├── email : varchar(300)  
-        └── passwd : varchar (300)  
-        └── isAdmin : tinyint (200) 
+        └── passwd : varchar (30)  
+        └── isAdmin : tinyint (1) 
 
 -----------------
 
