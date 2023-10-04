@@ -1,5 +1,5 @@
 # El-projet-gps
-Notre super projet avec Quentin et Tiébot
+Notre super projet avec Quentin et Thibaut
 
 ## 1) L'IP des machines virtuelles utilisées pour le projet :
     - __192.168.64.148__, l'IP pour accéder au site.  
