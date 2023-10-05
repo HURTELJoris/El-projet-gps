@@ -68,3 +68,5 @@ Lawrence
 *index.php* -> page de connexion
 
 *inscription.php* -> page d'inscription
+
+*readme.md* -> ce même fichier que vous êtes en train de lire pour vous aider à comprendre le code 
