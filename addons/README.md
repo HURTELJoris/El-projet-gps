@@ -28,6 +28,12 @@ Lawrence
 
 ## 3° ORGANISATION DU CODE
 
+* __./addons__
+    *readme.md* -> ce même fichier que vous êtes en train de lire pour vous aider à comprendre le code 
+    *lawrence.sql* -> un export clean de la base de données afin de pouvoir l'importer dans PhpMyAdmin   
+
+* __./boostrap__
+    *contient les fichiers boostraps*
 
 * __./css__  
     *bootstrap.css* -> css utilisé pour les templates bootstraps
@@ -47,6 +53,14 @@ Lawrence
     *main.js* -> gère le javascript général du site
     *website.js* -> gère la navbar sur toutes les pages et la fermeture de la pop-up de modification
       
+* __./utils__  
+    *pdo.php* -> se connecte à la base de données
+
+    *session.php* -> gère la session avec l'utilisateur
+
+    *user.php* -> code de la classe user
+
+
 *accueil.php* -> page d'accueil du site
 
 *compte.php* -> page pour gérer les informations du compte
@@ -54,13 +68,3 @@ Lawrence
 *index.php* -> page de connexion
 
 *inscription.php* -> page d'inscription
-
-*lawrence.sql* -> un export clean de la base de données afin de pouvoir l'importer dans PhpMyAdmin  
-
-*pdo.php* -> se connecte à la base de données
-
-*session.php* -> gère la session avec l'utilisateur
-
-*user.php* -> code de la classe user
-
-*readme.md* -> ce même fichier que vous êtes en train de lire pour vous aider à comprendre le code  
