@@ -1,6 +1,6 @@
 <?php
   session_start();
-  include("session.php");
+  include("utils/session.php");
 
   // Si l'utilisateur est connecté
   if (isset($_SESSION["IsConnecting"]) && $_SESSION["IsConnecting"] == true)
@@ -60,7 +60,7 @@
 		      			<input type="text" name="inputNom" class="form-control" placeholder="Nom" maxlength="29" required>
 		      		</div>
 		      		<div class="form-group">
-		      			<input type="text" name="inputEmail" class="form-control" placeholder="Exemple@gmail.com" maxlength="199" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Entrez une adresse e-mail valide" autocomplete="email" required>
+		      			<input type="email" name="inputEmail" class="form-control" placeholder="Exemple@gmail.com" maxlength="199" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Entrez une adresse e-mail valide" autocomplete="email" required>
 		      		</div>
 					<div class="form-group">
 						<input id="password-field" name="inputPassword" type="password" class="form-control" placeholder="Mot de passe" maxlength="29" required>

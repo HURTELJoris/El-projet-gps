@@ -45,12 +45,12 @@
         
                             if ($count == 1) // Si toujours personne n'a était trouver
                             {
-                                $insert = "INSERT INTO user (nom, email, passwd) VALUES ('$name', '$email', '$passwd');";
+                                $insert = "INSERT INTO user (nom, email, passwd, isAdmin) VALUES ('$name', '$email', '$passwd', 0);";
                             }
                         }
                         else if($row_count == 0) // Si il  n'y à pas encore d'utilisateur
                         {
-                            $insert = "INSERT INTO user (nom, email, passwd) VALUES ('$name', '$email', '$passwd');";     
+                            $insert = "INSERT INTO user (nom, email, passwd, isAdmin) VALUES ('$name', '$email', '$passwd', 0);";     
                         }
                     }
 
@@ -109,6 +109,7 @@
                                 $_SESSION["Login"] = $user['nom']; // Tableau de session Login = login de l'utilsateur
                                 $_SESSION["EmailUsername"] = $login;
                                 $_SESSION["IsConnecting"] = true;
+                                $this->creationSucceeded = 1;
 
                                 // On va mettre si il est admin dans la session
                                 $isAdmin = $this->getIsAdmin($login);
@@ -311,12 +312,11 @@
 
         }
 
-        // Méthode pour récupérer tout les utilisateurs
         public function getAllUser()
         {
             if($GLOBALS["pdo"])
             {
-                $selectAllUser = "SELECT  nom, email FROM user";
+                $selectAllUser = "SELECT nom, email FROM user";
                 $selectAllUserResult = $GLOBALS["pdo"]->query($selectAllUser);
 
                 if($selectAllUserResult != false)

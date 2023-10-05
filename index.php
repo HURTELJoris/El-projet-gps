@@ -1,6 +1,6 @@
 <?php
   session_start();
-  include("session.php");
+  include("utils/session.php");
 
   // Si l'utilisateur est connecté
   if (isset($_SESSION["IsConnecting"]) && $_SESSION["IsConnecting"] == true)
