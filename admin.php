@@ -110,97 +110,54 @@
             <div id="layoutSidenav_content">
                 <main>
 
-                <!-- Modif pour les comptes -->
-                <div class="container mt-4">
-
-                    <h2>Liste des comptes</h2>
+                    <!-- Modif pour les comptes -->
+                    <div class="container mt-4">
                     <input type="text" id="search" class="form-control mb-2" placeholder="Rechercher par nom ou e-mail">
-
+                    
+                    <h1>Liste des Utilisateurs</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Nom</th>
-                                <th>E-mail</th>
-                                <th>Modification</th>
+                                <th>Email</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                                if ($tabUsers != 0)
+                            if ($tabUsers != 0)  // Si le tableau des utilisateurs et valide
+                            {
+                                foreach ($tabUsers as $user)  // On va parcourir chacun d'eux
                                 {
-                                    foreach($tabUsers as $user) // On va parcourir le tableau d'utilisateur
-                                    {
-                                        ?>
-                                            <tr>
-                                                <td><?=$user['nom']?></td>
-                                                <td><?=$user['email']?></td>
-                                                <td style="text-align: center;">
-                                                    <button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal">Modifier le compte</button>
-                                                </td>
-                                            </tr>
-                                        <?php
-                                    }
+                                    echo "<tr>";
+                                    echo "<td>{$user['idUser']}</td>";
+                                    echo "<td>{$user['nom']}</td>";
+                                    echo "<td>{$user['email']}</td>";
+                                    echo "<td>";
+                                    echo "<form method='post'>";
+                                    echo "<input type='hidden' name='idUser' value='{$user['idUser']}'>";
+                                    echo "<div class='form-group'>";
+                                    echo "<label for='nom'>Nom:</label>";
+                                    echo "<input type='text' class='form-control' name='nom' value='{$user['nom']}'>";
+                                    echo "</div>";
+                                    echo "<div class='form-group'>";
+                                    echo "<label for='email'>Email:</label>";
+                                    echo "<input type='text' class='form-control' name='email' value='{$user['email']}'>";
+                                    echo "</div>";
+                                    echo "<button type='submit' name='modifier' class='btn btn-primary'>Modifier</button>";
+                                    echo "</form>";
+                                    echo "</td>";
+                                    echo "</tr>";
                                 }
-                                else
-                                {
-                                    echo  "ERREUR";
-                                }
+                            } 
+                            else 
+                            {
+                                echo "ERREUR";
+                            }
                             ?>
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Modal pour la modification -->
-                <div class="modal" id="myModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form id="myForm" action="" method="POST">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Modification du Compte</h4>
-                                    <button class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="newName">Nouveau Nom:</label>
-                                    <input type="text" class="form-control" id="newName" name="newName" placeholder="(Au moins un champ doit être rempli)">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="newEmail">Nouvelle E-mail:</label>
-                                    <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="(Au moins un champ doit être rempli)">
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success" name="changeInformation" id="saveChanges">Enregistrer</button>
-                                    <button class="btn btn-danger" data-dismiss="modal">Annuler</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                    <div class="demo-preview">
-                    <?php
-                        if ($resultForm == 1) // Si un des formulaires est valider
-                        {
-                            ?>
-                                <div class="alert alert-success alert-dismissable">
-                                    <button type="button" class="close-button"><span aria-hidden="true">×</span></button>
-                                    <strong>Changement effectuer avec succés !</strong> (regarder votre pseudo en bas à droite)
-                                </div>
-                            <?php
-                        }
-                        else if ($resultForm == 0)// Sinon message d'erreur
-                        {
-                            ?>
-                                <div class="alert alert-danger alert-dismissable">
-                                    <button type="button" class="close-button"><span aria-hidden="true">×</span></button>
-                                    <strong>ERREUR !</strong> Un problème est servenu lors du changement
-                                </div>
-                            <?php
-                        }
-                    ?>
-                    </div>
                 </main>
 
                 <footer class="py-4 bg-light mt-auto">

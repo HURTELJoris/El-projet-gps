@@ -11,15 +11,13 @@
         // Constructeur
         public function __construct($name, $email, $passwd)
         {
-            $insert = null; // Par défaut, il n'y à  pas d'insertion
+            $insert = 0; // Par défaut, il n'y à  pas d'insertion
             $this->creationSucceeded = -1; // par défaut, la création échoue
     
-            if ($email != null) // Si un des champs n'est pas nul
+            if ($name != null && $email != null && $passwd != null) // Si les champs sont  pas nul
             {
                 if ($GLOBALS["pdo"]) // Si la connexion à la bdd est réussi
                 {
-                    $count = 0;
-    
                     $account = "SELECT * FROM user";
                     $selectAccount = $GLOBALS["pdo"]->query($account);
         
@@ -31,11 +29,19 @@
                             $tabAccount = $selectAccount->fetchAll();
                             foreach($tabAccount as $accountX) // On va parcourir le tableau d'utilisateur
                             {
-                                if($email != $accountX['email'] && $name != $accountX['nom']) // Si on trouve pas d'utilisateur
+                                if ($name == $accountX['nom'] && $email == $accountX['email']) // Si on trouve déjà un utilisateur avec le même username et email
                                 {
-                                    $count = 1;
+                                    $this->creationSucceeded = 2;
+                                    $insert = 2;
+                                    break;
                                 }
-                                else if ($email == $accountX['email'] || $name == $accountX['nom']) // Si on trouve déjà un utilisateur
+                                else if ($name == $accountX['nom']) // Si on trouve déjà un utilisateur avec le même username
+                                {
+                                    $this->creationSucceeded = 2;
+                                    $insert = 2;
+                                    break;
+                                }
+                                else if ($email == $accountX['email']) // Si on trouve déjà un utilisateur avec le même email
                                 {
                                     $this->creationSucceeded = 2;
                                     $insert = 2;
@@ -43,7 +49,7 @@
                                 }
                             }
         
-                            if ($count == 1) // Si toujours personne n'a était trouver
+                            if ($insert == 0) // Si toujours personne n'a était trouver
                             {
                                 $insert = "INSERT INTO user (nom, email, passwd, isAdmin) VALUES ('$name', '$email', '$passwd', 0);";
                             }
@@ -69,6 +75,10 @@
                             $_SESSION["Login"] = $name; // Tableau de session Login = login de l'utilsateur
                             $_SESSION["EmailUsername"] = $email;
                             $_SESSION["IsConnecting"] = true;
+
+                            // On va mettre si il est admin dans la session
+                            $isAdmin = $this->getIsAdmin($email);
+                            $_SESSION["isAdmin"] = $isAdmin;
                         }
                         else
                         {
@@ -116,6 +126,10 @@
                                 $_SESSION["isAdmin"] = $isAdmin;
 
                                 return 1;
+                            }
+                            else if ($login != $user['email']) // Si l'email est différent
+                            {
+                                return 2;
                             }
                             else if ($password != $user['passwd']) // Si le mot de passe est  différent
                             {
@@ -316,7 +330,7 @@
         {
             if($GLOBALS["pdo"])
             {
-                $selectAllUser = "SELECT nom, email FROM user";
+                $selectAllUser = "SELECT idUser, nom, email FROM user";
                 $selectAllUserResult = $GLOBALS["pdo"]->query($selectAllUser);
 
                 if($selectAllUserResult != false)

@@ -70,7 +70,7 @@
 						<?php
 						    if ($isSignUp == 2)
 							{
-								echo "<p style='color:red; margin-left: 20px;'>Le compte existe déjà !!!</p>"; // On affiche le compte existe déjà
+								echo "<p style='color:red; margin-left: 20px;'>L'adresse mail / nom existe déjà !!!</p>"; // On affiche le compte existe déjà
 							}
 						?>
 						<button type="submit" name="btnSubmit" class="form-control btn btn-primary px-3">S'inscrire</button>

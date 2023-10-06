@@ -1,5 +1,6 @@
 <?php
   include("user.php");
+  include("pdo.php");
 
   $current_url = $_SERVER['REQUEST_URI']; // Récupérer le nom du fichier
   $theUser = new User(NULL, NULL, NULL); // Définition de l'utilsateur à NULL
@@ -91,11 +92,24 @@
   else if (strpos($current_url, '/admin.php') !== false) // Si page d'accueil
   {
     $resultForm = -1;
-    $tabUsers = $theUser->getAllUser();
+    $tabUsers = $theUser->getAllUser(); // On récupére le tableau des users
 
-    if (isset($_POST["changeInformation"])) // Si il appuis le bouton pour envoyé le formulaire
+    if (isset($_POST['modifier']))  // Si on change les infos pour un user
     {
-      
+      $idUser = $_POST['idUser'];
+      $nouveauNom = $_POST['nom'];
+      $nouvelEmail = $_POST['email'];
+  
+      // on utilise PDO pour mettre à jour les données dans la base de données
+      $requete = "UPDATE user SET nom=:nom, email=:email WHERE idUser=:idUser";
+      $stmt = $GLOBALS["pdo"]->prepare($requete);
+      $stmt->bindParam(':nom', $nouveauNom);
+      $stmt->bindParam(':email', $nouvelEmail);
+      $stmt->bindParam(':idUser', $idUser);
+      $stmt->execute();
+
+      // Rafraîchir la page pour afficher les modifications mises à jour
+      header("Location: admin.php");
     }
   }
 ?>
