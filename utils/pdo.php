@@ -1,4 +1,5 @@
 <?php
+// ON essaye de se connecter  à  la BDD
     try {
         $ipserver = "192.168.65.9";
         $nomBase = "Lawrence";

@@ -50,7 +50,7 @@
 				<div class="col-md-6 text-center mb-5">
 					<h2 class='heading-section'>Inscription</h2>
 				</div>
-			</div>
+			</div> <!-- FORMULAIRE INSCRIPTION -->
 			<div class="row justify-content-center">
 				<div class="col-md-6 col-lg-4">
 					<div class="login-wrap p-0">
@@ -68,7 +68,7 @@
 					</div>
 					<div class="form-group">
 						<?php
-						    if ($isSignUp == 2)
+						    if ($isSignUp == 2) 
 							{
 								echo "<p style='color:red; margin-left: 20px;'>L'adresse mail / nom existe déjà !!!</p>"; // On affiche le compte existe déjà
 							}

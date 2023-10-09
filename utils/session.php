@@ -1,6 +1,6 @@
 <?php
-  include("user.php");
-  include("pdo.php");
+  include("user.php"); // Classe
+  include("pdo.php"); // BDD
 
   $current_url = $_SERVER['REQUEST_URI']; // Récupérer le nom du fichier
   $theUser = new User(NULL, NULL, NULL); // Définition de l'utilsateur à NULL

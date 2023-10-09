@@ -114,17 +114,17 @@
                                 Paramètre(s) de votre compte :
                             </div>
 
-                            <div class="card-body">
+                            <div class="card-body"> <!-- MODIFIER LES INFOS UTILISATEURS -->
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4"> <!-- Nom d'utilisateur -->
                                             <p><strong>Nom d'utilisateur : <?=$_SESSION["Login"]?></strong></p>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4"> <!-- Email -->
                                             <p><strong>E-mail : <?=$_SESSION["EmailUsername"]?></strong></p>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4"> <!-- Type de compte -->
                                         <?php
                                             if (isset($_SESSION["IsConnecting"]) && $_SESSION["isAdmin"] == 1)
                                             {
@@ -141,6 +141,7 @@
                                         ?>
                                     </div>
 
+                                    <!-- Les différents fomulaire ici pour modifier les informations des utilisateurs --> 
                                     <div class="col-md-6">
                                         <form action="" method="POST">
                                             <p>Nom d'utilisateur :</p>
@@ -210,7 +211,7 @@
                     </div>
                 </main>
 
-                <footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light mt-auto"> <!-- FOOTER -->
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; La Providence 2023</div>
