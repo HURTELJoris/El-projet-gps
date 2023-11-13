@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("utils/session.php"); // Inclusion de fichier  avec les classes
-include("valuesGPS");
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +16,10 @@ include("valuesGPS");
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/website.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -65,7 +68,7 @@ include("valuesGPS");
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Accueil
                         </a>
-                        <a class="nav-link" href="valeursBateaux.php">
+                        <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Accès aux données
                         </a>
@@ -93,9 +96,53 @@ include("valuesGPS");
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
-                <h1 style="margin: 50px;">Bienvenue sur la page d'accueil !</h1>
-            </main>
+            <h1>Position des Bateaux</h1>
+
+            <div id="donnees-container"></div>
+            <script>
+                function fetchDonnees() {
+                    fetch('valuesGPS.php')
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Erreur lors de la récupération des données');
+                            }
+                        })
+                        .then(data => {
+                            if (data.length > 0) {
+                                // Remplacez le contenu de l'élément avec les nouvelles données
+                                document.getElementById('donnees-container').innerHTML = formatDonnees(data);
+
+                            } else {
+                                document.getElementById('donnees-container').innerHTML = 'Aucune donnée n\'a été renvoyée.<br>';
+                            }
+                        })
+                        .catch(error => {
+                            document.getElementById('donnees-container').innerHTML = 'Erreur lors de la récupération des données : ' + error.message + '<br>';
+                        });
+                }
+
+                function formatDonnees(data) {
+                    // Créez le début de la table avec une classe pour le style
+                    let formattedData = '<table class="donnees-table"><tr><th>BateauID</th><th>Date</th><th>Heure</th><th>Latitude</th><th>Longitude</th></tr>';
+
+                    // Ajoutez chaque entrée de données comme une ligne dans la table
+                    data.forEach(entry => {
+                        formattedData += `<tr><td>${entry.BateauID}</td><td>${entry.Date}</td><td>${entry.Heure}</td><td>${entry.Latitude}</td><td>${entry.Longitude}</td></tr>`;
+                    });
+
+                    // Fermez la table
+                    formattedData += '</table>';
+                    return formattedData;
+                }
+
+                // Appeler fetchDonnees() immédiatement au démarrage
+                fetchDonnees();
+
+                // Ensuite, définir un intervalle de 3 secondes pour appeler fetchDonnees() de manière répétée
+                setInterval(fetchDonnees, 3000); // 3000 millisecondes équivalent à 3 secondes
+            </script>
 
 
             <footer class="py-4 bg-light mt-auto"> <!-- FOOTER -->
@@ -107,6 +154,7 @@ include("valuesGPS");
             </footer>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/website.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

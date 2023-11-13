@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("utils/session.php"); // Inclusion de fichier  avec les classes
-include("valuesGPS");
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +16,10 @@ include("valuesGPS");
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/website.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -93,10 +96,99 @@ include("valuesGPS");
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
-                <h1 style="margin: 50px;">Bienvenue sur la page d'accueil !</h1>
-            </main>
+            <h1>Position des Bateaux</h1>
+            <div id="map"></div>
 
+            <script>
+                var map = L.map('map').setView([50.65, 2], 9);
+                var markers = L.layerGroup(); // Créez un groupe de couches pour les marqueurs
+                var polyline; // Variable pour stocker la polyline
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                function fetchDonnees() {
+                    fetch('valuesGPS.php')
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Erreur lors de la récupération des données');
+                            }
+                        })
+                        .then(data => {
+                            // Effacez tous les marqueurs existants et la polyline
+                            markers.clearLayers();
+                            if (polyline) {
+                                map.removeLayer(polyline);
+                            }
+
+                            if (data.length > 0) {
+                                // Traitez les données récupérées ici
+                                var coordinates = []; // Tableau pour stocker les coordonnées des marqueurs
+
+                                data.forEach(entry => {
+                                    const latitude = convertirCoordonnee(entry.Latitude);
+                                    const longitude = convertirCoordonnee(entry.Longitude);
+
+                                    // Ajoutez un nouveau marqueur au groupe de couches
+                                    L.marker([latitude, longitude])
+                                        .bindPopup(
+                                            'BateauID: ' + entry.BateauID + '<br>' +
+                                            'Date: ' + entry.Date + '<br>' +
+                                            'Heure: ' + entry.Heure + '<br>' +
+                                            'Latitude: ' + latitude + '<br>' +
+                                            'Longitude: ' + longitude + '<br>' //+
+                                            //'Vitesse: ' + entry.Vitesse + ' km/h<br>' +
+                                            //'Vitesse Moyenne: ' + entry.VitesseMoyenne + ' km/h'
+                                        )
+                                        .addTo(markers);
+
+                                    // Ajoutez les coordonnées au tableau
+                                    coordinates.push([latitude, longitude]);
+
+                                    console.log("Latitude convertie : " + latitude);
+                                    console.log("Longitude convertie : " + longitude);
+                                });
+
+                                // Ajoutez le groupe de couches à la carte
+                                markers.addTo(map);
+
+                                // Créez une polyline avec les coordonnées
+                                polyline = L.polyline(coordinates, {
+                                    color: 'blue'
+                                }).addTo(map);
+                            } else {
+                                console.log('Aucune donnée n\'a été renvoyée.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors de la récupération des données :', error);
+                        });
+                }
+
+                function convertirCoordonnee(coordonnee) {
+                    // Supprimez le dernier caractère ('N') et divisez la chaîne
+                    const valeur = parseFloat(coordonnee.slice(0, -1));
+
+                    // Calculez les degrés et minutes décimales
+                    const degres = Math.floor(valeur / 100);
+                    const minutesDecimales = (valeur % 100) / 60;
+
+                    // Calculez la coordonnée convertie
+                    const coordonneeConvertie = degres + minutesDecimales;
+
+                    // Retournez la coordonnée convertie
+                    return coordonneeConvertie;
+                }
+
+                // Appeler fetchDonnees() immédiatement au démarrage
+                fetchDonnees();
+
+                // Ensuite, définir un intervalle de 3 secondes pour appeler fetchDonnees() de manière répétée
+                setInterval(fetchDonnees, 3000); // 3000 millisecondes équivalent à 3 secondes
+            </script>
 
             <footer class="py-4 bg-light mt-auto"> <!-- FOOTER -->
                 <div class="container-fluid px-4">
@@ -107,6 +199,7 @@ include("valuesGPS");
             </footer>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/website.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

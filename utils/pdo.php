@@ -1,7 +1,7 @@
 <?php
 // ON essaye de se connecter  à  la BDD
     try {
-        $ipserver = "192.168.65.9";
+        $ipserver = "192.168.64.213";
         $nomBase = "Lawrence";
         $loginPrivilege = "root";
         $passPrivilege = "root";
