@@ -2,8 +2,8 @@
 Notre super projet avec Quentin et Thibaut
 
 ## 1) L'IP des machines virtuelles utilisées pour le projet :
-    - __192.168.64.148__, l'IP pour accéder au site.  
-    - __192.168.65.9__, l'IP pour accéder à la base de données.
+    - __192.168.64.84__, l'IP pour accéder au site.  
+    - __192.168.65.213__, l'IP pour accéder à la base de données.
 
 -----------------
 
@@ -22,6 +22,16 @@ Lawrence
         ├── email : varchar(300)  
         └── passwd : varchar (30)  
         └── isAdmin : tinyint (1) 
+
+        
+      └── gps  
+        ├── BateauID : int (clé primaire)  
+        ├── Date : date 
+        ├── Heure : time
+        ├── Latitude : varchar (100) 
+        ├── Longitude : varchar (100) 
+        └── Vitesse : int
+        └── VitesseMoyenne : float
 
 -----------------
 
